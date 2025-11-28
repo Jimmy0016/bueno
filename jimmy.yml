@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  espinoza:
+    image: ghcr.io/jimmy0016/espinoza:3.0.0
+    build: .
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.espinoza.entrypoints=http"
+        - "traefik.http.routers.espinoza.rule=Host(`espinoza.byronrm.com`)"
+        - "traefik.http.middlewares.espinoza-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.espinoza.middlewares=espinoza-https-redirect"
+        - "traefik.http.routers.espinoza-secure.entrypoints=https"
+        - "traefik.http.routers.espinoza-secure.rule=Host(`espinoza.byronrm.com`)"
+        - "traefik.http.routers.espinoza-secure.tls=true"
+        - "traefik.http.routers.espinoza-secure.tls.certresolver=http"
+        - "traefik.http.routers.espinoza-secure.service=espinoza"
+        - "traefik.http.services.espinoza.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
