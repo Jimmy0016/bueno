@@ -99,10 +99,10 @@ jobs:
             # Descargar la imagen explícitamente
             docker pull ghcr.io/jimmy0016/espinoza:3.0.0
 
-            docker stack rm rugal || true
+            docker stack rm doraemon || true
             sleep 10
             # Despliegue
-            docker stack deploy --with-registry-auth --resolve-image always -c stack.yml rugal
+            docker stack deploy --with-registry-auth --resolve-image always -c stack.yml doraemon
             
             echo "Despliegue enviado a Swarm."
             
